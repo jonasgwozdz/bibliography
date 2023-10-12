@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bibliography</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="bibliography.css" />
+  </head>
+  <body>
+    <header>aksw Publications</header>
+    <div
+      id="content"
+      style="display: flex; justify-content: flex-start; width: 100%"
+    >
+      <div id="filters">
+        <p id="counter"></p>
+        <div>
+          <input type="checkbox" id="sort" value="asc" />
+          <label for="sort">Sort Ascending</label>
+        </div>
+        <h2 class="expand" onclick="toggleYearFilter()">+ Year</h2>
+        <div id="yearFilter" style="display: none"></div>
+      </div>
+      <div style="width: 100%">
+        <div
+          id="search"
+          style="
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+          "
+        >
+          <input
+            id="textFilter"
+            type="text"
+            placeholder="Filter by text"
+            class="form-control"
+            style="width: 45%"
+          />
+        </div>
+        <div id="infoModal" class="modal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <span class="close">&times;</span>
+            </div>
+            <pre id="infoData"></pre>
+          </div>
+        </div>
+        <div id="publications">
+          <!-- Publications will be appended here -->
+        </div>
+      </div>
+    </div>
+
+    <script src="bibliography.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
