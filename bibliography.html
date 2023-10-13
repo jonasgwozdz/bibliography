@@ -17,29 +17,25 @@
       <div id="filters">
         <p id="counter"></p>
         <div>
-          <input type="checkbox" id="sort" value="asc" />
-          <label for="sort">Sort Ascending</label>
+          <input type="checkbox" id="sort" class="sort-toggle" />
+          <label for="sort" id="sortLabel"
+            ><span id="arrow">↓</span> Descending</label
+          >
         </div>
         <h2 class="expand" onclick="toggleYearFilter()">+ Year</h2>
         <div id="yearFilter" style="display: none"></div>
       </div>
       <div style="width: 100%">
-        <div
-          id="search"
-          style="
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            margin-bottom: 20px;
-          "
-        >
-          <input
-            id="textFilter"
-            type="text"
-            placeholder="Filter by text"
-            class="form-control"
-            style="width: 45%"
-          />
+        <div id="search" style="width: 100%; margin-bottom: 20px">
+          <div style="width: 45%; margin: auto">
+            <input
+              id="textFilter"
+              type="text"
+              placeholder="Filter by text"
+              class="form-control"
+              style="width: 100%"
+            />
+          </div>
         </div>
         <div id="infoModal" class="modal">
           <div class="modal-content">

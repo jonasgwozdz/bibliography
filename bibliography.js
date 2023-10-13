@@ -42,9 +42,29 @@ window.onload = function () {
   });
 
   document.getElementById("sort").addEventListener("change", function () {
+    let arrow = document.getElementById("arrow");
+    let sortLabel = document.getElementById("sortLabel"); // Get the label element
+    if (this.checked) {
+      arrow.textContent = "↑";
+      sortLabel.innerHTML = '<span id="arrow">↑</span> Ascending'; // Set the label text to "Ascending" when checked
+    } else {
+      arrow.textContent = "↓";
+      sortLabel.innerHTML = '<span id="arrow">↓</span> Descending'; // Set the label text to "Descending" when not checked
+    }
     updateDOM();
   });
 };
+
+function jsonToBibtex(json) {
+  let bibtex = "@" + json["pub-type"] + "{" + json["bibtexKey"] + ",\n";
+  for (let key in json) {
+    if (key !== "pub-type" && key !== "bibtexKey") {
+      bibtex += "  " + key + " = {" + json[key] + "},\n";
+    }
+  }
+  bibtex += "}";
+  return bibtex;
+}
 
 function toggleYearFilter() {
   var yearFilter = document.getElementById("yearFilter");
@@ -88,7 +108,6 @@ function updateDOM() {
 
   // Determine sort order
   let sortOrder = document.getElementById("sort").checked ? "asc" : "desc";
-
   // Sort filtered publications
   filteredPublications.sort((a, b) => {
     return sortOrder === "asc" ? a.year - b.year : b.year - a.year;
@@ -120,13 +139,10 @@ function updateDOM() {
     // Create info button
     let infoButton = document.createElement("i");
     infoButton.className = "info-button";
-    infoButton.textContent = "i";
+    infoButton.textContent = '"';
     infoButton.addEventListener("click", function () {
-      document.getElementById("infoData").textContent = JSON.stringify(
-        publication,
-        null,
-        2
-      );
+      let bibtex = jsonToBibtex(publication);
+      document.getElementById("infoData").textContent = bibtex;
       document.getElementById("infoModal").style.display = "block";
     });
     div.appendChild(infoButton);

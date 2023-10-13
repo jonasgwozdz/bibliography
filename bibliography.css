@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f8f9fa;
+  background-color: #eff1f3;
   color: #343a40;
 }
 header {
@@ -12,12 +12,21 @@ header {
   display: flex;
   justify-content: flex-start;
   width: 80%;
+  background-color: #ffffff;
 }
 #filters {
   width: 200px;
   padding: 10px;
   border-right: 1px solid #ddd;
   background-color: #eff1f3;
+}
+#search {
+  padding-top: 10px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 20px;
+  border-top: 1px solid #ddd;
 }
 
 #filters h2 {
@@ -49,6 +58,8 @@ header {
   border: 1px solid #ddd;
   padding: 20px;
   margin: 10px 0;
+  margin-right: 20px;
+  margin-left: 20px;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
   border-radius: 10px;
 }
@@ -70,14 +81,14 @@ header {
   bottom: 10px;
   right: 10px;
   cursor: pointer;
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   background-color: #007bff;
   color: #fff;
   border-radius: 50%;
   text-align: center;
-  line-height: 20px;
-  font-size: 14px;
+  line-height: 30px;
+  font-size: 21px;
 }
 .modal {
   display: none;
@@ -129,4 +140,32 @@ select {
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.sort-toggle {
+  display: none;
+}
+
+.sort-toggle + label {
+  height: 20px;
+  display: inline-block;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: color 0.3s;
+  width: 100%;
+  text-align: left;
+}
+
+.sort-toggle + label:hover {
+  color: #007bff;
+}
+
+.sort-toggle:checked + label #arrow {
+  content: "↑";
+}
+
+#arrow {
+  display: inline-block;
+  margin-right: 5px; /* Add this line */
+  line-height: 20px;
 }
