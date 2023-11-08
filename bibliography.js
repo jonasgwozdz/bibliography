@@ -135,17 +135,53 @@ function updateDOM() {
     let year = document.createElement("p");
     year.textContent = "Year: " + publication.year;
     div.appendChild(year);
-
+    
     // Create info button
-    let infoButton = document.createElement("i");
-    infoButton.className = "info-button";
-    infoButton.textContent = '"';
+    let infoButton = document.createElement("a");
+    infoButton.className = "url-button";
+    infoButton.textContent = "BIB";
+    // Add event listener to info button to display bibtex when clicked
     infoButton.addEventListener("click", function () {
       let bibtex = jsonToBibtex(publication);
       document.getElementById("infoData").textContent = bibtex;
       document.getElementById("infoModal").style.display = "block";
     });
     div.appendChild(infoButton);
+
+    // Check if publication has a URL and create a button for it
+    if (publication.url) {
+      let urlButton = document.createElement("a");
+      urlButton.href = publication.url;
+      urlButton.textContent = "PDF";
+      urlButton.className = "url-button";
+      div.appendChild(urlButton);
+    }
+    // Check if publication has an abstract and create a button for it
+    if (publication.abstract) {
+      let abstractButton = document.createElement("a");
+      abstractButton.textContent = "ABS";
+      abstractButton.className = "url-button";
+      abstractButton.addEventListener("click", function () {
+        let infoData = document.getElementById("infoData");
+        infoData.textContent = '';
+        let abstractText = document.createElement("p");
+        abstractText.textContent = publication.abstract;
+        abstractText.style.whiteSpace = 'pre-wrap'; // This will allow the text to wrap
+        infoData.appendChild(abstractText);
+        document.getElementById("infoModal").style.display = "block";
+      });
+      div.appendChild(abstractButton);
+    }
+    
+    // Check if publication has an ID and create a button for it
+    if (publication.id) {
+      let urlButton = document.createElement("a");
+      urlButton.href = publication.id;
+      urlButton.textContent = "URL";
+      urlButton.className = "url-button";
+      div.appendChild(urlButton);
+    }
+
 
     // When the user clicks on <span> (x), close the modal
     document.getElementsByClassName("close")[0].onclick = function () {

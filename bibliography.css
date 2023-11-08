@@ -48,6 +48,13 @@ header {
 #yearFilter input[type="checkbox"] {
   margin-right: 5px;
 }
+.url-button {
+  margin-right: 10px; /* Adjust as needed */
+}
+.url-button:hover {
+  cursor: pointer;
+}
+
 #yearFilter label {
   margin: 0.25px;
   margin-left: 5px;
