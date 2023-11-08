@@ -1,5 +1,5 @@
 let publicationsData = [];
-
+let currentPage = 1;
 window.onload = function () {
   fetch("aksw.json")
     .then((response) => response.json())
@@ -22,6 +22,7 @@ window.onload = function () {
         checkbox.value = year;
 
         checkbox.addEventListener("change", function () {
+          currentPage = 1;
           updateDOM();
         });
 
@@ -38,10 +39,12 @@ window.onload = function () {
     });
 
   document.getElementById("textFilter").addEventListener("input", function (e) {
+    currentPage = 1;
     updateDOM();
   });
 
   document.getElementById("sort").addEventListener("change", function () {
+    currentPage = 1;
     let arrow = document.getElementById("arrow");
     let sortLabel = document.getElementById("sortLabel"); // Get the label element
     if (this.checked) {
@@ -74,7 +77,10 @@ function toggleYearFilter() {
     yearFilter.style.display = "none";
   }
 }
-
+function changePage(page) {
+  currentPage = page;
+  updateDOM();
+}
 function updateDOM() {
   let container = document.getElementById("publications");
   container.innerHTML = "";
@@ -113,8 +119,12 @@ function updateDOM() {
     return sortOrder === "asc" ? a.year - b.year : b.year - a.year;
   });
 
+  let start = (currentPage - 1) * 25;
+  let end = start + 25;
+  let paginatedPublications = filteredPublications.slice(start, end);
+
   // Display filtered and sorted publications
-  filteredPublications.forEach((publication) => {
+  paginatedPublications.forEach((publication) => {
     let div = document.createElement("div");
     div.className = "publication";
 
@@ -196,6 +206,70 @@ function updateDOM() {
     };
     container.appendChild(div);
   });
+
+  let totalPages = Math.ceil(filteredPublications.length / 25);
+
+  // Create a div for pagination buttons
+  let paginationDiv = document.createElement("div");
+  paginationDiv.style.textAlign = "center"; // Center the buttons
+  
+  // Create a button for the first page
+  if (currentPage > 2) {
+    let firstPageButton = document.createElement("button");
+    firstPageButton.textContent = 1;
+    firstPageButton.className = "btn btn-secondary mr-2"; // Add margin to the right
+    firstPageButton.addEventListener("click", function () {
+      changePage(1);
+      window.scrollTo(0,document.body.scrollHeight);
+    });
+    paginationDiv.appendChild(firstPageButton);
+  }
+  
+  // Create a button for the previous page
+  if (currentPage > 1) {
+    let previousPageButton = document.createElement("button");
+    previousPageButton.textContent = currentPage - 1;
+    previousPageButton.className = "btn btn-secondary mr-2"; // Add margin to the right
+    previousPageButton.addEventListener("click", function () {
+      changePage(currentPage - 1);
+      window.scrollTo(0,document.body.scrollHeight);
+    });
+    paginationDiv.appendChild(previousPageButton);
+  }
+  
+  // Create a button for the current page
+  let currentPageButton = document.createElement("button");
+  currentPageButton.textContent = currentPage;
+  currentPageButton.className = "btn btn-primary mr-2"; // Add margin to the right
+  paginationDiv.appendChild(currentPageButton);
+  
+  // Create a button for the next page
+  if (currentPage < totalPages) {
+    let nextPageButton = document.createElement("button");
+    nextPageButton.textContent = currentPage + 1;
+    nextPageButton.className = "btn btn-secondary mr-2"; // Add margin to the right
+    nextPageButton.addEventListener("click", function () {
+      changePage(currentPage + 1);
+      window.scrollTo(0,document.body.scrollHeight);
+    });
+    paginationDiv.appendChild(nextPageButton);
+  }
+  
+  // Create a button for the last page
+  if (currentPage < totalPages - 1) {
+    let lastPageButton = document.createElement("button");
+    lastPageButton.textContent = totalPages;
+    lastPageButton.className = "btn btn-secondary mr-2"; // Add margin to the right
+    lastPageButton.addEventListener("click", function () {
+      changePage(totalPages);
+      window.scrollTo(0,document.body.scrollHeight);
+    });
+    paginationDiv.appendChild(lastPageButton);
+  }
+  
+  // Append the pagination div to the container
+  container.appendChild(paginationDiv);
+
   document.getElementById("counter").textContent =
     "Number of publications: " + filteredPublications.length;
 }
