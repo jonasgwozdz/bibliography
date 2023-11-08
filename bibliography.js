@@ -147,7 +147,7 @@ function updateDOM() {
     let authors = document.createElement("p");
     if (publication.authors) {
       authors.textContent =
-        "Authors: " +
+        "" +
         publication.authors.map((a) => a.first + " " + a.last).join(", ");
     } else {
       authors.textContent = "Authors: N/A";
@@ -155,7 +155,7 @@ function updateDOM() {
     div.appendChild(authors);
 
     let year = document.createElement("p");
-    year.textContent = "Year: " + publication.year;
+    year.textContent = "" + publication.year;
     div.appendChild(year);
 
     // Create info button

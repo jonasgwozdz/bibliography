@@ -105,7 +105,7 @@ header {
 
 /* URL button styles */
 .url-button {
-  margin-right: 15px; /* Adjust as needed */
+  margin-right: 15px;
 }
 .url-button:hover {
   cursor: pointer;
