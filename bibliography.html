@@ -7,14 +7,14 @@
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
     <link rel="stylesheet" href="bibliography.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <header>aksw Publications</header>
-    <div
-      id="content"
-      style="display: flex; justify-content: flex-start; width: 100%"
-    >
+    <div id="content">
       <div id="filters">
         <p id="counter"></p>
         <div>
@@ -24,18 +24,12 @@
           >
         </div>
         <h2 class="expand" onclick="toggleYearFilter()">+ Year</h2>
-        <div id="yearFilter" style="display: none"></div>
+        <div id="yearFilter"></div>
       </div>
       <div style="width: 100%">
-        <div id="search" style="width: 100%; margin-bottom: 20px">
+        <div id="search">
           <div style="width: 45%; margin: auto">
-            <input
-              id="textFilter"
-              type="text"
-              placeholder="Filter by text"
-              class="form-control"
-              style="width: 100%"
-            />
+            <input id="textFilter" type="text" placeholder="Search..." class="form-control">
           </div>
         </div>
         <div id="infoModal" class="modal">

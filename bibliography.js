@@ -1,8 +1,15 @@
+const PUBLICATIONS_PER_PAGE = 25;
 let publicationsData = [];
 let currentPage = 1;
+
 window.onload = function () {
   fetch("aksw.json")
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("HTTP error " + response.status);
+      }
+      return response.json();
+    })
     .then((data) => {
       publicationsData = data.items.filter(
         (item) => item.type === "Publication"
@@ -36,8 +43,13 @@ window.onload = function () {
       });
 
       updateDOM();
+    })
+    .catch((error) => {
+      console.error(
+        "There has been a problem with your fetch operation:",
+        error
+      );
     });
-
   document.getElementById("textFilter").addEventListener("input", function (e) {
     currentPage = 1;
     updateDOM();
@@ -119,8 +131,8 @@ function updateDOM() {
     return sortOrder === "asc" ? a.year - b.year : b.year - a.year;
   });
 
-  let start = (currentPage - 1) * 25;
-  let end = start + 25;
+  let start = (currentPage - 1) * PUBLICATIONS_PER_PAGE;
+  let end = start + PUBLICATIONS_PER_PAGE;
   let paginatedPublications = filteredPublications.slice(start, end);
 
   // Display filtered and sorted publications
@@ -145,7 +157,7 @@ function updateDOM() {
     let year = document.createElement("p");
     year.textContent = "Year: " + publication.year;
     div.appendChild(year);
-    
+
     // Create info button
     let infoButton = document.createElement("a");
     infoButton.className = "url-button";
@@ -173,16 +185,16 @@ function updateDOM() {
       abstractButton.className = "url-button";
       abstractButton.addEventListener("click", function () {
         let infoData = document.getElementById("infoData");
-        infoData.textContent = '';
+        infoData.textContent = "";
         let abstractText = document.createElement("p");
         abstractText.textContent = publication.abstract;
-        abstractText.style.whiteSpace = 'pre-wrap'; // This will allow the text to wrap
+        abstractText.style.whiteSpace = "pre-wrap"; // This will allow the text to wrap
         infoData.appendChild(abstractText);
         document.getElementById("infoModal").style.display = "block";
       });
       div.appendChild(abstractButton);
     }
-    
+
     // Check if publication has an ID and create a button for it
     if (publication.id) {
       let urlButton = document.createElement("a");
@@ -191,7 +203,6 @@ function updateDOM() {
       urlButton.className = "url-button";
       div.appendChild(urlButton);
     }
-
 
     // When the user clicks on <span> (x), close the modal
     document.getElementsByClassName("close")[0].onclick = function () {
@@ -207,12 +218,14 @@ function updateDOM() {
     container.appendChild(div);
   });
 
-  let totalPages = Math.ceil(filteredPublications.length / 25);
+  let totalPages = Math.ceil(
+    filteredPublications.length / PUBLICATIONS_PER_PAGE
+  );
 
   // Create a div for pagination buttons
   let paginationDiv = document.createElement("div");
   paginationDiv.style.textAlign = "center"; // Center the buttons
-  
+
   // Create a button for the first page
   if (currentPage > 2) {
     let firstPageButton = document.createElement("button");
@@ -220,11 +233,11 @@ function updateDOM() {
     firstPageButton.className = "btn btn-secondary mr-2"; // Add margin to the right
     firstPageButton.addEventListener("click", function () {
       changePage(1);
-      window.scrollTo(0,document.body.scrollHeight);
+      window.scrollTo(0, document.body.scrollHeight);
     });
     paginationDiv.appendChild(firstPageButton);
   }
-  
+
   // Create a button for the previous page
   if (currentPage > 1) {
     let previousPageButton = document.createElement("button");
@@ -232,17 +245,17 @@ function updateDOM() {
     previousPageButton.className = "btn btn-secondary mr-2"; // Add margin to the right
     previousPageButton.addEventListener("click", function () {
       changePage(currentPage - 1);
-      window.scrollTo(0,document.body.scrollHeight);
+      window.scrollTo(0, document.body.scrollHeight);
     });
     paginationDiv.appendChild(previousPageButton);
   }
-  
+
   // Create a button for the current page
   let currentPageButton = document.createElement("button");
   currentPageButton.textContent = currentPage;
   currentPageButton.className = "btn btn-primary mr-2"; // Add margin to the right
   paginationDiv.appendChild(currentPageButton);
-  
+
   // Create a button for the next page
   if (currentPage < totalPages) {
     let nextPageButton = document.createElement("button");
@@ -250,11 +263,11 @@ function updateDOM() {
     nextPageButton.className = "btn btn-secondary mr-2"; // Add margin to the right
     nextPageButton.addEventListener("click", function () {
       changePage(currentPage + 1);
-      window.scrollTo(0,document.body.scrollHeight);
+      window.scrollTo(0, document.body.scrollHeight);
     });
     paginationDiv.appendChild(nextPageButton);
   }
-  
+
   // Create a button for the last page
   if (currentPage < totalPages - 1) {
     let lastPageButton = document.createElement("button");
@@ -262,11 +275,11 @@ function updateDOM() {
     lastPageButton.className = "btn btn-secondary mr-2"; // Add margin to the right
     lastPageButton.addEventListener("click", function () {
       changePage(totalPages);
-      window.scrollTo(0,document.body.scrollHeight);
+      window.scrollTo(0, document.body.scrollHeight);
     });
     paginationDiv.appendChild(lastPageButton);
   }
-  
+
   // Append the pagination div to the container
   container.appendChild(paginationDiv);
 
