@@ -41,6 +41,39 @@ window.onload = function () {
         yearFilter.appendChild(label);
         yearFilter.appendChild(document.createElement("br"));
       });
+      // Generate checkboxes for each author
+      let authors = Array.from(
+        new Set(
+          publicationsData.flatMap((item) =>
+            item.authors ? item.authors.map((author) => {
+              let fullName = author.first + " " + author.last;
+              return fullName.replace(/(^|\s)and /i, "");
+            }) : []
+          )
+        )
+      );
+      authors.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+
+      let authorFilter = document.getElementById("authorFilter");
+      authors.forEach((author) => {
+        let checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = "author" + author.replace(/ /g, "");
+        checkbox.value = author;
+
+        checkbox.addEventListener("change", function () {
+          currentPage = 1;
+          updateDOM();
+        });
+
+        let label = document.createElement("label");
+        label.htmlFor = "author" + author.replace(/ /g, "");
+        label.appendChild(document.createTextNode(author));
+
+        authorFilter.appendChild(checkbox);
+        authorFilter.appendChild(label);
+        authorFilter.appendChild(document.createElement("br"));
+      });
 
       updateDOM();
     })
@@ -50,6 +83,7 @@ window.onload = function () {
         error
       );
     });
+
   document.getElementById("textFilter").addEventListener("input", function (e) {
     currentPage = 1;
     updateDOM();
@@ -89,10 +123,21 @@ function toggleYearFilter() {
     yearFilter.style.display = "none";
   }
 }
+
+function toggleAuthorFilter() {
+  var authorFilter = document.getElementById("authorFilter");
+  if (authorFilter.style.display === "none") {
+    authorFilter.style.display = "block";
+  } else {
+    authorFilter.style.display = "none";
+  }
+}
+
 function changePage(page) {
   currentPage = page;
   updateDOM();
 }
+
 function updateDOM() {
   let container = document.getElementById("publications");
   container.innerHTML = "";
@@ -102,15 +147,26 @@ function updateDOM() {
     document.querySelectorAll("#yearFilter input:checked")
   ).map((checkbox) => Number(checkbox.value));
 
+  // Get the checked authors
+  let checkedAuthors = Array.from(
+    document.querySelectorAll("#authorFilter input:checked")
+  ).map((checkbox) => checkbox.value);
+
   // Get the filter text
   let filterText = document.getElementById("textFilter").value;
 
   // Filter publications
   let filteredPublications = publicationsData.filter((publication) => {
     let publicationYear = Number(publication.year);
+    let publicationAuthors = publication.authors ? publication.authors.map((author) => author.first + " " + author.last) : [];
     if (checkedYears.length > 0 && !checkedYears.includes(publicationYear)) {
       return false;
     }
+
+    if (checkedAuthors.length > 0 && !publicationAuthors.some(author => checkedAuthors.includes(author))) {
+      return false;
+    }
+
     if (filterText) {
       const publicationValues = Object.values(publication).flat();
       if (

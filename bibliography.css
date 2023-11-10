@@ -26,7 +26,7 @@ header {
 
 /* Filters styles */
 #filters {
-  width: 200px;
+  width: 290px;
   padding: 20px;
   border-right: 2px solid #ddd;
   background-color: #f5f5f5;
@@ -62,8 +62,29 @@ header {
   color: #495057;
 }
 
+#authorFilter {
+  display: none;
+  max-height: 500px;
+  overflow-y: auto;
+  padding-top: 10px 0;
+}
+
+#authorFilter input[type="checkbox"] {
+  margin-right: 0px;
+}
+
+#authorFilter label {
+  margin: 0.25px;
+  margin-left: 5px;
+  color: #495057;
+  font-size: 12px;
+}
+
 /* Search styles */
 #search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding-top: 20px;
   display: flex;
   justify-content: center;
@@ -76,11 +97,13 @@ header {
 }
 
 /* Publication styles */
+.results {
+  border-top: 2px solid #ddd;
+}
 .publication {
   position: relative;
-  border-top: 1px solid #ddd;
-  border-bottom: 0px solid #ddd;
-  padding-top: 30px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 15px;
   margin-top: 15px;
   margin-right: 30px;
   margin-left: 30px;

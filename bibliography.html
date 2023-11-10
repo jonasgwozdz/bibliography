@@ -14,6 +14,11 @@
   </head>
   <body>
     <header>aksw Publications</header>
+    <div id="search">
+      <div style="width: 45%; margin: auto">
+        <input id="textFilter" type="text" placeholder="Search..." class="form-control">
+      </div>
+    </div>
     <div id="content">
       <div id="filters">
         <p id="counter"></p>
@@ -25,13 +30,10 @@
         </div>
         <h2 class="expand" onclick="toggleYearFilter()">+ Year</h2>
         <div id="yearFilter"></div>
+        <h2 class="expand" onclick="toggleAuthorFilter()">+ Author</h2>
+<div id="authorFilter"></div>
       </div>
-      <div style="width: 100%">
-        <div id="search">
-          <div style="width: 45%; margin: auto">
-            <input id="textFilter" type="text" placeholder="Search..." class="form-control">
-          </div>
-        </div>
+      <div class="results" style="width: 100%">
         <div id="infoModal" class="modal">
           <div class="modal-content">
             <div class="modal-header">
