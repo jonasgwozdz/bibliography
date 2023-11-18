@@ -1,6 +1,7 @@
 const PUBLICATIONS_PER_PAGE = 25;
 let publicationsData = [];
 let currentPage = 1;
+let currentInfoBoxContent = ""; // Add this line
 
 window.onload = function () {
   fetch("aksw.json")
@@ -138,6 +139,32 @@ function changePage(page) {
   updateDOM();
 }
 
+function createInfoBox(content) {
+  console.log("Creating info box with content: ", content);
+  let infoBox = document.createElement("div");
+  infoBox.className = "info-box";
+  infoBox.innerText = content; // Use innerText instead of textContent
+  return infoBox;
+}
+
+function toggleInfoBox(publicationDiv, infoBox) {
+  console.log("toggleInfoBox called");
+  // Remove any existing info box
+  let existingInfoBoxes = publicationDiv.querySelectorAll(".info-box");
+  existingInfoBoxes.forEach((box) => publicationDiv.removeChild(box));
+
+  // Check if the new info box content is the same as the current one
+  if (currentInfoBoxContent === infoBox.innerText) {
+    // If it is, clear currentInfoBoxContent so it won't be added again
+    currentInfoBoxContent = "";
+  } else {
+    // If it's not, update currentInfoBoxContent and add the new info box
+    currentInfoBoxContent = infoBox.innerText;
+    console.log("Adding new info box");
+    publicationDiv.appendChild(infoBox);
+  }
+}
+
 function updateDOM() {
   let container = document.getElementById("publications");
   container.innerHTML = "";
@@ -220,9 +247,10 @@ function updateDOM() {
     infoButton.textContent = "BIB";
     // Add event listener to info button to display bibtex when clicked
     infoButton.addEventListener("click", function () {
+      console.log("BIB button clicked");
       let bibtex = jsonToBibtex(publication);
-      document.getElementById("infoData").textContent = bibtex;
-      document.getElementById("infoModal").style.display = "block";
+      let infoBox = createInfoBox(bibtex);
+      toggleInfoBox(div, infoBox);
     });
     div.appendChild(infoButton);
 
@@ -240,13 +268,9 @@ function updateDOM() {
       abstractButton.textContent = "ABS";
       abstractButton.className = "url-button";
       abstractButton.addEventListener("click", function () {
-        let infoData = document.getElementById("infoData");
-        infoData.textContent = "";
-        let abstractText = document.createElement("p");
-        abstractText.textContent = publication.abstract;
-        abstractText.style.whiteSpace = "pre-wrap"; // This will allow the text to wrap
-        infoData.appendChild(abstractText);
-        document.getElementById("infoModal").style.display = "block";
+        console.log("ABS button clicked");
+        let infoBox = createInfoBox(publication.abstract);
+        toggleInfoBox(div, infoBox);
       });
       div.appendChild(abstractButton);
     }
@@ -260,17 +284,6 @@ function updateDOM() {
       div.appendChild(urlButton);
     }
 
-    // When the user clicks on <span> (x), close the modal
-    document.getElementsByClassName("close")[0].onclick = function () {
-      document.getElementById("infoModal").style.display = "none";
-    };
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function (event) {
-      if (event.target == document.getElementById("infoModal")) {
-        document.getElementById("infoModal").style.display = "none";
-      }
-    };
     container.appendChild(div);
   });
 
