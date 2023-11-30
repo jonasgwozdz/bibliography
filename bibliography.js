@@ -10,10 +10,10 @@ window.onload = function () {
 
 // Fetches data and initializes the application
 function fetchDataAndInitialize() {
-  fetch("aksw.json")
+  fetch("/bibliography/aksw.json")
     .then(handleFetchResponse)
     .then(initializeData)
-    .then(addEventListeners) // Moved addEventListeners() here
+    .then(addEventListeners)
     .catch(handleFetchError);
 }
 
